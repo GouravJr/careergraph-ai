@@ -1,43 +1,49 @@
 # CareerGraph AI
 
-**AI-powered QR portfolio and recruiter matching platform for students and early-career AI engineers.**
+**AI-powered QR portfolio and recruiter-job matching platform for students and early-career AI engineers.**
 
-CareerGraph AI is a personal portfolio intelligence system that helps recruiters understand my profile faster. Instead of only sharing a normal LinkedIn or GitHub link, recruiters can scan a QR code, select the role they are hiring for, and instantly see which of my projects best prove my fit.
+CareerGraph AI turns a normal student portfolio into an intelligent recruiter experience. Instead of only sharing a LinkedIn or GitHub link, recruiters can open a QR-based profile, select or paste a target role, and instantly see which projects prove candidate-role fit.
 
-The project combines a personal AI/ML portfolio, role-based project matching, recruiter lead capture, and a private dashboard for follow-up tracking.
+## Live Demo
 
----
-
-## Problem
-
-At hackathons, career fairs, university events, and networking sessions, students usually share only a LinkedIn profile or GitHub link.
-
-This creates three problems:
-
-1. Recruiters need time to understand which projects are relevant.
-2. Good student profiles are forgotten after short conversations.
-3. Students have no structured way to track recruiter interest and follow up.
-
-CareerGraph AI solves this by turning a personal QR code into an intelligent recruiter-facing portfolio.
+- Live App: https://careergraph-ai-gourav.streamlit.app/
+- GitHub Repository: https://github.com/GouravJr/careergraph-ai
 
 ---
 
-## Solution
+## Why I Built This
 
-Recruiters can:
+At career fairs, hackathons, university events, and networking sessions, students usually share only a LinkedIn or GitHub link.
 
-* Open my QR-based portfolio
-* Select a target role such as GenAI Working Student, RAG Engineer Intern, AI/ML Intern, or Data Scientist Intern
-* See my best matching projects for that role
-* View project proof points, skills, and GitHub links
-* Leave their contact details and message
+That creates a problem:
 
-I can then use the private dashboard to:
+- Recruiters meet many students and profiles are easy to forget.
+- GitHub projects are often hard to evaluate quickly.
+- Students do not know which project impressed which recruiter.
+- Follow-up after networking events is usually unstructured.
 
-* Track recruiter leads
-* See which roles companies are interested in
-* Identify the strongest matched project per lead
-* Generate follow-up messages
+CareerGraph AI solves this by turning a personal QR code into an interactive recruiter-facing portfolio.
+
+---
+
+## What CareerGraph AI Does
+
+Recruiters and reviewers can:
+
+- Open my QR-based AI portfolio
+- View my AI/ML profile and project evidence
+- Select a target role such as GenAI Working Student, RAG Engineer Intern, AI/ML Intern, or Data Scientist Intern
+- Paste a real job description and get a project-based fit analysis
+- See matched skills, possible gaps, and strongest matching projects
+- Leave recruiter interest through a lead form
+
+I can use the private dashboard to:
+
+- Track recruiter leads
+- See role interest
+- Identify top matched projects
+- Export leads as CSV
+- Prepare follow-up messages
 
 ---
 
@@ -45,41 +51,66 @@ I can then use the private dashboard to:
 
 ### Recruiter View
 
-* Personal AI/ML profile
-* Skills snapshot
-* Target roles
-* Role-based project matching
-* Project proof points
-* GitHub project links
-* Recruiter interest form
+A clean profile page with:
 
-### Lead Dashboard
+- Personal AI/ML summary
+- Target roles
+- Skills snapshot
+- GitHub and LinkedIn links
+- QR code generation
+- Role-based project matching
+- Recruiter interest form
 
-* Stores recruiter leads locally
-* Shows total leads
-* Tracks unique companies
-* Displays most interested role
-* Shows role-interest breakdown
-* Generates follow-up message drafts
+### Reviewer Snapshot
 
-### Project Matching
+A 30-second executive overview for recruiters, TUM reviewers, and industry partners.
 
-The current version uses keyword-based matching between role requirements and project descriptions. It ranks projects based on matched skills, project categories, and proof points.
+It explains:
 
-Future versions will use semantic embeddings for deeper project-role matching.
+- Problem
+- Solution
+- Impact
+- Core product features
+- Technical architecture
+- Project evidence matrix
+- Roadmap
+
+### JD Match Mode
+
+Recruiters can paste a job description and receive:
+
+- Overall fit score
+- Matched skills
+- Possible skill gaps
+- Top matching projects
+- Recruiter-ready fit summary
+- Suggested follow-up message
+
+### Private Lead Dashboard
+
+The dashboard includes:
+
+- Password protection
+- Recruiter lead tracking
+- Role-interest breakdown
+- Company overview
+- Follow-up message suggestions
+- CSV export
 
 ---
 
 ## Tech Stack
 
-* Python
-* Streamlit
-* SQLite
-* Pandas
-* Plotly
-* JSON-based profile/project data
-* QR code generation planned
-* LLM-based fit summary planned
+- Python
+- Streamlit
+- SQLite
+- Pandas
+- QR code generation
+- JSON-based profile and project data
+- Rule-based role matching
+- Job-description matching logic
+- GitHub deployment workflow
+- Streamlit Community Cloud
 
 ---
 
@@ -133,6 +164,7 @@ careergraph-ai/
 │   ├── matcher.py
 │   ├── database.py
 │   ├── qr_generator.py
+│   ├── jd_matcher.py
 │   └── ai_summary.py
 │
 ├── assets/
@@ -141,99 +173,3 @@ careergraph-ai/
 └── docs/
     ├── architecture.md
     └── project_plan.md
-```
-
----
-
-## How to Run Locally
-
-Clone the repository:
-
-```bash
-git clone https://github.com/GouravJr/careergraph-ai.git
-cd careergraph-ai
-```
-
-Create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-For Windows PowerShell:
-
-```bash
-.\.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the app:
-
-```bash
-streamlit run app.py
-```
-
----
-
-## Roadmap
-
-### Version 1
-
-* Personal recruiter-facing portfolio
-* Role-based project matching
-* Recruiter lead form
-* Private dashboard
-
-### Version 2
-
-* QR code generation
-* Public deployment
-* Profile visit tracking
-* Export leads as CSV
-
-### Version 3
-
-* Semantic project-role matching using embeddings
-* AI-generated recruiter fit summaries
-* Personalized follow-up email drafts
-* Company/job-description based matching
-
-### Version 4
-
-* Authentication for private dashboard
-* Cloud database
-* Analytics dashboard
-* Multi-user version for students and university career events
-
----
-
-## Why This Project Matters
-
-CareerGraph AI is not just a portfolio website. It is a small AI product built around a real career problem:
-
-**How can students make their projects easier to understand, remember, and match to industry roles?**
-
-The project demonstrates:
-
-* AI product thinking
-* Practical Python development
-* Streamlit application building
-* Data modeling with JSON and SQLite
-* Recruiter/user-focused design
-* Role-based project recommendation logic
-* End-to-end portfolio packaging
-
----
-
-## Author
-
-**Gourav Srinivasalu**
-AI/ML Engineering Student | Ex-IBM | Agentic AI, RAG & Document Intelligence
-
-* LinkedIn: https://www.linkedin.com/in/gourav-srinivasalu/
-* GitHub: https://github.com/GouravJr
