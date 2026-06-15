@@ -28,6 +28,47 @@ roles = load_json("data/roles.json")
 
 init_db()
 
+
+def get_dashboard_password():
+    """
+    Reads dashboard password from Streamlit secrets if available.
+    Falls back to a local development password.
+    """
+    try:
+        return st.secrets.get("DASHBOARD_PASSWORD", "careergraph2026")
+    except Exception:
+        return "careergraph2026"
+
+
+def require_dashboard_access():
+    """
+    Simple password gate for the private lead dashboard.
+    """
+    if st.session_state.get("dashboard_unlocked", False):
+        with st.sidebar:
+            if st.button("Lock dashboard"):
+                st.session_state.dashboard_unlocked = False
+                st.rerun()
+        return True
+
+    st.warning("Private dashboard. Enter password to view recruiter leads.")
+
+    with st.form("dashboard_login"):
+        password = st.text_input("Dashboard password", type="password")
+        submitted = st.form_submit_button("Unlock dashboard")
+
+        if submitted:
+            if password == get_dashboard_password():
+                st.session_state.dashboard_unlocked = True
+                st.success("Dashboard unlocked.")
+                st.rerun()
+            else:
+                st.error("Incorrect password.")
+
+    st.info("For local development, use the demo password configured in the code or Streamlit secrets.")
+    return False
+
+
 st.set_page_config(
     page_title="CareerGraph AI | Gourav Srinivasalu",
     page_icon="🚀",
@@ -598,6 +639,9 @@ def dashboard_view():
     st.title("My Lead Dashboard")
     st.subheader("Track recruiter interest from QR scans and portfolio visits")
 
+    if not require_dashboard_access():
+        return
+
     leads = get_all_leads()
 
     if not leads:
@@ -642,6 +686,15 @@ def dashboard_view():
 
     st.write("### Recruiter Leads")
     st.dataframe(df, use_container_width=True)
+
+    csv_data = df.to_csv(index=False).encode("utf-8")
+
+    st.download_button(
+        label="Download leads as CSV",
+        data=csv_data,
+        file_name="careergraph_recruiter_leads.csv",
+        mime="text/csv",
+    )
 
     st.divider()
 

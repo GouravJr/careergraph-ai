@@ -4,6 +4,7 @@ __pycache__/
 
 db/*.db
 .env
+.streamlit/secrets.toml
 
 .DS_Store
 .vscode/
