@@ -6,6 +6,12 @@ import streamlit as st
 
 from src.matcher import rank_projects_for_role
 from src.database import init_db, add_lead, get_all_leads
+from src.qr_generator import generate_qr_png_bytes
+from src.jd_matcher import (
+    analyze_job_description,
+    generate_fit_summary,
+    generate_follow_up_message
+)
 
 
 BASE_DIR = Path(__file__).parent
@@ -28,22 +34,86 @@ st.set_page_config(
     layout="wide"
 )
 
-page = st.sidebar.radio(
-    "Navigation",
-    ["Recruiter View", "My Lead Dashboard"]
+
+st.markdown(
+    """
+    <style>
+    .main-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: #9CA3AF;
+        margin-top: 0rem;
+    }
+
+    .impact-card {
+        padding: 1.2rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+        min-height: 160px;
+        color: #F8FAFC !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .impact-card b {
+        color: #FFFFFF !important;
+        font-size: 1.05rem;
+    }
+
+    .impact-card p {
+        color: #CBD5E1 !important;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
 
-def recruiter_view():
-    st.title("CareerGraph AI")
-    st.subheader("AI-Powered QR Portfolio & Recruiter Matching Platform")
+page = st.sidebar.radio(
+    "Navigation",
+    ["Recruiter View", "JD Match Mode", "My Lead Dashboard"]
+)
+
+
+def render_landing_header():
+    st.markdown('<div class="main-title">CareerGraph AI</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="subtitle">AI-powered QR portfolio and recruiter-job matching platform</div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown(
         """
-        Recruiters can scan my QR profile, select a target role, and instantly see
-        which of my projects prove my fit.
+        CareerGraph AI turns a personal QR profile into an intelligent recruiter experience.
+        Recruiters can scan, explore projects, select or paste a role, and instantly see
+        which projects prove candidate-role fit.
         """
     )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Profile Mode", "QR-ready")
+
+    with col2:
+        st.metric("Project Matching", "Role-aware")
+
+    with col3:
+        st.metric("Recruiter Leads", "Trackable")
+
+    with col4:
+        st.metric("Fit Summary", "JD-based")
+
+
+def recruiter_view():
+    render_landing_header()
 
     st.divider()
 
@@ -63,6 +133,79 @@ def recruiter_view():
         st.link_button("GitHub", profile["github"])
         st.write(f"📍 {profile['location']}")
         st.write(f"📧 {profile['email']}")
+
+        st.write("### QR Profile")
+
+        qr_target = st.selectbox(
+            "QR links to:",
+            ["LinkedIn Profile", "GitHub Profile"],
+            index=0
+        )
+
+        if qr_target == "LinkedIn Profile":
+            qr_url = profile["linkedin"]
+        else:
+            qr_url = profile["github"]
+
+        qr_bytes = generate_qr_png_bytes(qr_url)
+
+        st.image(qr_bytes, caption=f"Scan to open {qr_target}", width=180)
+
+        st.download_button(
+            label="Download QR Code",
+            data=qr_bytes,
+            file_name="gourav_profile_qr.png",
+            mime="image/png"
+        )
+
+    st.divider()
+
+    st.header("Why this profile is relevant")
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        st.markdown(
+            """
+            <div class="impact-card">
+                <b>Applied AI Systems</b>
+                <p>
+                Built projects around RAG, OCR, document intelligence, and agentic AI.
+                The focus is on practical AI workflows, not generic chatbot demos.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c2:
+        st.markdown(
+            """
+            <div class="impact-card">
+                <b>Industry Data Experience</b>
+                <p>
+                IBM experience includes Python and SQL pipelines, ML models,
+                reporting automation, dashboards, and measurable business impact.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c3:
+        st.markdown(
+            """
+            <div class="impact-card">
+                <b>Recruiter-Friendly Proof</b>
+                <p>
+                Projects are mapped to target roles, matched skills, proof points,
+                and GitHub repositories so recruiters can evaluate fit quickly.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
 
     st.divider()
 
@@ -160,6 +303,137 @@ def recruiter_view():
                 st.success("Thank you. Your interest has been saved.")
 
 
+def jd_match_mode():
+    st.title("JD Match Mode")
+    st.subheader("Paste a job description and see project-based candidate fit")
+
+    st.markdown(
+        """
+        This mode is designed for recruiters and industry reviewers. It connects a job description
+        to concrete project evidence, matched skills, possible gaps, and a recruiter-ready fit summary.
+        """
+    )
+
+    st.divider()
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        job_title = st.text_input("Job title", value="GenAI Working Student")
+        company = st.text_input("Company", value="Example Company")
+
+    with col2:
+        st.info(
+            "Tip: Paste a real working student, internship, or AI/ML job description. "
+            "The system will rank projects based on evidence."
+        )
+
+    job_description = st.text_area(
+        "Job description",
+        height=220,
+        placeholder=(
+            "Paste a job description here. Example: We are looking for a working student "
+            "with Python, LangChain, RAG, FastAPI, Docker, SQL, and experience building AI applications..."
+        )
+    )
+
+    if st.button("Analyze Fit"):
+        if not job_description.strip():
+            st.error("Please paste a job description first.")
+            return
+
+        analysis = analyze_job_description(
+            profile=profile,
+            projects=projects,
+            job_title=job_title,
+            company=company,
+            job_description=job_description
+        )
+
+        st.divider()
+
+        st.header("Fit Result")
+
+        c1, c2, c3 = st.columns(3)
+
+        with c1:
+            st.metric("Overall Fit Score", f"{analysis['fit_score']}%")
+
+        with c2:
+            st.metric("Matched Skills", len(analysis["matched_skills"]))
+
+        with c3:
+            st.metric("Skill Gaps", len(analysis["gap_skills"]))
+
+        st.write("### Matched Skills")
+        if analysis["matched_skills"]:
+            st.write(", ".join(analysis["matched_skills"]))
+        else:
+            st.warning("No direct skill matches found from the known skill list.")
+
+        st.write("### Possible Skill Gaps")
+        if analysis["gap_skills"]:
+            st.write(", ".join(analysis["gap_skills"]))
+        else:
+            st.success("No major gap detected from the current skill list.")
+
+        st.divider()
+
+        st.header("Top Matching Projects")
+
+        for item in analysis["ranked_projects"]:
+            project = item["project"]
+
+            with st.container(border=True):
+                col_left, col_right = st.columns([3, 1])
+
+                with col_left:
+                    st.subheader(project["title"])
+                    st.caption(project["category"])
+                    st.write(project["description"])
+
+                    if item["matched_terms"]:
+                        st.write("**Evidence matched:** " + ", ".join(item["matched_terms"][:12]))
+
+                    if project["github"]:
+                        st.link_button("View GitHub Repository", project["github"])
+
+                with col_right:
+                    st.metric("Project Match", f"{item['score']}%")
+
+        st.divider()
+
+        st.header("Recruiter-Ready Fit Summary")
+
+        fit_summary = generate_fit_summary(
+            profile=profile,
+            job_title=job_title,
+            company=company,
+            analysis=analysis
+        )
+
+        st.text_area(
+            "Fit summary",
+            value=fit_summary,
+            height=140
+        )
+
+        st.header("Follow-up Message")
+
+        follow_up = generate_follow_up_message(
+            profile=profile,
+            job_title=job_title,
+            company=company,
+            analysis=analysis
+        )
+
+        st.text_area(
+            "Suggested follow-up",
+            value=follow_up,
+            height=180
+        )
+
+
 def dashboard_view():
     st.title("My Lead Dashboard")
     st.subheader("Track recruiter interest from QR scans and portfolio visits")
@@ -237,5 +511,7 @@ def dashboard_view():
 
 if page == "Recruiter View":
     recruiter_view()
+elif page == "JD Match Mode":
+    jd_match_mode()
 else:
     dashboard_view()
