@@ -1,0 +1,83 @@
+[
+  {
+    "title": "Agentic Multi-Document Analysis System",
+    "period": "Apr 2026 - Present",
+    "category": "Agentic AI / Document Intelligence",
+    "description": "Autonomous AI agent that plans, reasons, selects tools, analyzes multiple documents, compares extracted fields, detects discrepancies, and generates structured reports.",
+    "skills": ["Python", "LangGraph", "LangChain", "Groq", "FAISS", "OCR", "FastAPI", "Streamlit", "Docker"],
+    "proof_points": [
+      "Uses multi-step tool calling instead of single-turn chatbot logic.",
+      "Supports OCR for scanned documents.",
+      "Extracts dates, amounts, IBANs, invoice numbers, and emails.",
+      "Compares information across multiple documents.",
+      "Shows reasoning steps transparently in the UI."
+    ],
+    "github": "https://github.com/GouravJr/agentic-doc-analyst"
+  },
+  {
+    "title": "OCR-Based RAG Assistant for German and English Documents",
+    "period": "Apr 2026 - Present",
+    "category": "RAG / OCR / AI Assistant",
+    "description": "RAG + OCR pipeline for German and English document processing. Users can upload PDFs or scanned images, ask natural language questions, and receive answers with source-aware document context.",
+    "skills": ["Python", "LangChain", "FAISS", "Hugging Face", "Groq", "FastAPI", "Streamlit", "Tesseract OCR", "Docker"],
+    "proof_points": [
+      "Combines native PDF extraction with Tesseract OCR.",
+      "Uses sentence-transformer embeddings and FAISS vector search.",
+      "Supports German and English documents.",
+      "Extracts structured document fields.",
+      "Includes REST API and Streamlit frontend."
+    ],
+    "github": "https://github.com/GouravJr/rag-document-intelligence"
+  },
+  {
+    "title": "Music-Driven Cityscape Visualization",
+    "period": "May 2025 - Aug 2025",
+    "category": "Visual Computing / Audio Signal Processing",
+    "description": "Real-time audio-reactive visualization engine that converts music features into procedural cityscape animations inspired by Passau.",
+    "skills": ["Python", "Pygame", "NumPy", "SciPy", "Audio Signal Processing", "Real-time Graphics"],
+    "proof_points": [
+      "Analyzed RMS, beats, tempo, spectral centroid, and frequency bands.",
+      "Created mood-adaptive colors, particles, water ripples, and animated city elements.",
+      "Built modular architecture for visual computing seminar."
+    ],
+    "github": ""
+  },
+  {
+    "title": "UXRVT: Unity XR Visualization Toolkit",
+    "period": "Oct 2024 - Feb 2025",
+    "category": "XR / Data Visualization",
+    "description": "Unity-based toolkit inspired by D3.js for immersive 3D data visualization in XR environments.",
+    "skills": ["Unity", "C#", "XR", "Data Visualization", "Interactive Systems"],
+    "proof_points": [
+      "Implemented zoom, pan, tooltips, reverse mapping, and AR object instantiation.",
+      "Designed for large structured datasets in immersive environments."
+    ],
+    "github": "https://github.com/GouravJr/UXRVT-UnityXR-Toolkit"
+  },
+  {
+    "title": "EEG Sleep Scoring using Ensemble Learning and CNN-LSTM",
+    "period": "Jan 2023 - May 2023",
+    "category": "Biomedical ML / Time Series",
+    "description": "EEG-based sleep stage classification system using ensemble machine learning and a CNN-LSTM model.",
+    "skills": ["Python", "Machine Learning", "Deep Learning", "CNN-LSTM", "Signal Processing", "Scikit-learn"],
+    "proof_points": [
+      "Built EEG preprocessing and feature extraction pipeline.",
+      "Used Random Forest, Logistic Regression, AdaBoost, and CNN-LSTM models.",
+      "Worked with PhysioNet EDFX dataset."
+    ],
+    "github": ""
+  },
+  {
+    "title": "Plant Disease Detection using Transfer Learning",
+    "period": "Aug 2022 - Nov 2022",
+    "category": "Computer Vision / Deep Learning",
+    "description": "End-to-end computer vision pipeline for plant disease classification using CNNs and transfer learning.",
+    "skills": ["Python", "TensorFlow", "Keras", "Computer Vision", "Transfer Learning", "Deep Learning"],
+    "proof_points": [
+      "Compared EfficientNet-B2, ResNet152V2, VGG-19, DenseNet169, and Xception.",
+      "Classified 17 plant disease categories.",
+      "Used preprocessing, augmentation, fine-tuning, and model evaluation."
+    ],
+    "github": ""
+  }
+]

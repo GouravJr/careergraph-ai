@@ -1,0 +1,26 @@
+[
+  {
+    "role": "GenAI Working Student",
+    "keywords": ["LangChain", "LangGraph", "RAG", "LLM", "Groq", "OpenAI", "FastAPI", "Streamlit", "Docker", "Python"]
+  },
+  {
+    "role": "RAG Engineer Intern",
+    "keywords": ["RAG", "FAISS", "embeddings", "LangChain", "document intelligence", "OCR", "semantic search", "Python"]
+  },
+  {
+    "role": "AI/ML Intern",
+    "keywords": ["Machine Learning", "Deep Learning", "Python", "Scikit-learn", "TensorFlow", "PyTorch", "model evaluation"]
+  },
+  {
+    "role": "Data Scientist Intern",
+    "keywords": ["Python", "SQL", "Power BI", "Tableau", "Machine Learning", "data pipelines", "dashboards", "analytics"]
+  },
+  {
+    "role": "Python AI Developer",
+    "keywords": ["Python", "FastAPI", "Streamlit", "Docker", "APIs", "AI applications", "backend", "deployment"]
+  },
+  {
+    "role": "Document AI Engineer Intern",
+    "keywords": ["OCR", "RAG", "document processing", "FAISS", "LangChain", "Tesseract", "PDF extraction", "structured extraction"]
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "name": "Gourav Srinivasalu",
+  "headline": "AI/ML Engineering Student | Ex-IBM | Agentic AI, RAG & Document Intelligence",
+  "location": "Passau, Bavaria, Germany",
+  "email": "gouravjunior11@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/gourav-srinivasalu/",
+  "github": "https://github.com/GouravJr",
+  "summary": "M.Sc. AI Engineering student at Universität Passau with experience in machine learning, data analysis, RAG systems, OCR pipelines, document intelligence, and deployment-oriented AI applications. Previously worked at IBM as a Data Analyst & ML Engineering professional, building Python/SQL pipelines, ML models, and business dashboards.",
+  "target_roles": [
+    "AI/ML Intern",
+    "GenAI Working Student",
+    "RAG Engineer Intern",
+    "Data Scientist Intern",
+    "Python AI Developer",
+    "Document AI Engineer Intern"
+  ],
+  "skills": [
+    "Python",
+    "SQL",
+    "Machine Learning",
+    "Deep Learning",
+    "LangChain",
+    "LangGraph",
+    "RAG",
+    "FAISS",
+    "Streamlit",
+    "FastAPI",
+    "Docker",
+    "TensorFlow",
+    "PyTorch",
+    "Scikit-learn",
+    "Power BI",
+    "Tableau"
+  ],
+  "experience_highlights": [
+    "Built Python and SQL data pipelines for 500K+ enterprise records at IBM.",
+    "Reduced recurring manual reporting work by about 6 hours per week.",
+    "Trained churn prediction models using Logistic Regression and Random Forest.",
+    "Built dashboards in Power BI and Tableau for recurring KPI reviews.",
+    "Optimized SQL reporting queries and reduced report generation time by 30%."
+  ]
+}
