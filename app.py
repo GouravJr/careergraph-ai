@@ -10,7 +10,7 @@ from src.qr_generator import generate_qr_png_bytes
 from src.jd_matcher import (
     analyze_job_description,
     generate_fit_summary,
-    generate_follow_up_message
+    generate_follow_up_message,
 )
 
 
@@ -31,7 +31,7 @@ init_db()
 st.set_page_config(
     page_title="CareerGraph AI | Gourav Srinivasalu",
     page_icon="🚀",
-    layout="wide"
+    layout="wide",
 )
 
 
@@ -72,13 +72,13 @@ st.markdown(
     }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 
 page = st.sidebar.radio(
     "Navigation",
-    ["Recruiter View", "JD Match Mode", "My Lead Dashboard"]
+    ["Recruiter View", "Reviewer Snapshot", "JD Match Mode", "My Lead Dashboard"],
 )
 
 
@@ -86,7 +86,7 @@ def render_landing_header():
     st.markdown('<div class="main-title">CareerGraph AI</div>', unsafe_allow_html=True)
     st.markdown(
         '<div class="subtitle">AI-powered QR portfolio and recruiter-job matching platform</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.markdown(
@@ -139,7 +139,7 @@ def recruiter_view():
         qr_target = st.selectbox(
             "QR links to:",
             ["LinkedIn Profile", "GitHub Profile"],
-            index=0
+            index=0,
         )
 
         if qr_target == "LinkedIn Profile":
@@ -155,7 +155,7 @@ def recruiter_view():
             label="Download QR Code",
             data=qr_bytes,
             file_name="gourav_profile_qr.png",
-            mime="image/png"
+            mime="image/png",
         )
 
     st.divider()
@@ -175,7 +175,7 @@ def recruiter_view():
                 </p>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     with c2:
@@ -189,7 +189,7 @@ def recruiter_view():
                 </p>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     with c3:
@@ -203,9 +203,8 @@ def recruiter_view():
                 </p>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
 
     st.divider()
 
@@ -223,7 +222,7 @@ def recruiter_view():
     role_names = [role["role"] for role in roles]
     selected_role_name = st.selectbox(
         "Select the role you are hiring for:",
-        role_names
+        role_names,
     )
 
     selected_role = next(role for role in roles if role["role"] == selected_role_name)
@@ -283,7 +282,7 @@ def recruiter_view():
         company = st.text_input("Company / Organization")
         recruiter_message = st.text_area(
             "Message",
-            placeholder="Example: We are hiring for a GenAI Working Student role..."
+            placeholder="Example: We are hiring for a GenAI Working Student role...",
         )
 
         submitted = st.form_submit_button("Save recruiter interest")
@@ -298,9 +297,167 @@ def recruiter_view():
                     company=company.strip(),
                     role_interest=selected_role_name,
                     recruiter_message=recruiter_message.strip(),
-                    top_project=top_project
+                    top_project=top_project,
                 )
                 st.success("Thank you. Your interest has been saved.")
+
+
+def reviewer_snapshot():
+    st.title("Reviewer Snapshot")
+    st.subheader("30-second overview for recruiters, TUM reviewers, and industry partners")
+
+    st.markdown(
+        """
+        **CareerGraph AI** is an AI-powered QR portfolio and recruiter-job matching platform.
+        It turns a normal student profile into an intelligent, role-aware career interface.
+
+        Instead of asking recruiters to manually inspect LinkedIn, GitHub, and project descriptions,
+        the platform maps my projects to target roles, job descriptions, proof points, and recruiter follow-up actions.
+        """
+    )
+
+    st.divider()
+
+    st.header("Problem → Solution → Impact")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown(
+            """
+            ### Problem
+            Recruiters meet many students at events, but profiles are hard to remember and compare.
+            LinkedIn and GitHub alone do not clearly show which projects prove fit for a specific role.
+            """
+        )
+
+    with col2:
+        st.markdown(
+            """
+            ### Solution
+            A QR-based AI portfolio where recruiters can select or paste a role and instantly see
+            matched projects, skills, proof points, and follow-up suggestions.
+            """
+        )
+
+    with col3:
+        st.markdown(
+            """
+            ### Impact
+            Faster candidate understanding, better follow-up after networking events,
+            and a stronger bridge between student projects and industry hiring needs.
+            """
+        )
+
+    st.divider()
+
+    st.header("Core Product Features")
+
+    feature_data = [
+        {
+            "Feature": "QR Portfolio",
+            "What it does": "Turns a personal QR code into a recruiter-facing profile.",
+            "Recruiter Value": "Fast access during events and networking.",
+        },
+        {
+            "Feature": "Role-Based Project Match",
+            "What it does": "Ranks projects based on target roles like GenAI, RAG, ML, and Data Science.",
+            "Recruiter Value": "Shows relevant proof instead of generic project lists.",
+        },
+        {
+            "Feature": "JD Match Mode",
+            "What it does": "Analyzes pasted job descriptions against skills and project evidence.",
+            "Recruiter Value": "Makes candidate-role fit easier to evaluate.",
+        },
+        {
+            "Feature": "Lead Dashboard",
+            "What it does": "Tracks recruiter interest, role selection, company, and follow-up context.",
+            "Recruiter Value": "Shows product thinking around long-term networking.",
+        },
+        {
+            "Feature": "Follow-Up Generator",
+            "What it does": "Creates role-specific follow-up messages.",
+            "Recruiter Value": "Converts profile views into real career conversations.",
+        },
+    ]
+
+    st.dataframe(feature_data, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.header("Technical Architecture")
+
+    st.markdown(
+        """
+        ```text
+        Recruiter / Reviewer
+                |
+                v
+        Streamlit Frontend
+                |
+                |-- Profile + Projects JSON
+                |-- Role Matching Logic
+                |-- JD Matching Logic
+                |-- QR Generator
+                |
+                v
+        SQLite Lead Database
+                |
+                v
+        Lead Dashboard + Follow-Up Suggestions
+        ```
+        """
+    )
+
+    st.divider()
+
+    st.header("Project Evidence Matrix")
+
+    evidence_rows = []
+
+    for project in projects:
+        evidence_rows.append(
+            {
+                "Project": project["title"],
+                "Category": project["category"],
+                "Main Skills": ", ".join(project["skills"][:5]),
+                "Recruiter Signal": project["proof_points"][0]
+                if project["proof_points"]
+                else "Project evidence available",
+            }
+        )
+
+    st.dataframe(evidence_rows, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.header("Why this is stronger than a normal portfolio")
+
+    st.markdown(
+        """
+        - It is **interactive**, not just a static webpage.
+        - It connects **projects to job roles**, not just skills to keywords.
+        - It includes **recruiter lead capture**, making networking measurable.
+        - It has a **JD matching mode**, making it useful during real hiring conversations.
+        - It demonstrates **AI product thinking**, not only coding ability.
+        """
+    )
+
+    st.divider()
+
+    st.header("Next Roadmap")
+
+    roadmap = [
+        "Deploy public Streamlit app and connect QR code to live demo.",
+        "Add screenshots and demo GIFs to GitHub README.",
+        "Add semantic embeddings for better project-job matching.",
+        "Add password protection for private lead dashboard.",
+        "Add export to CSV for recruiter leads.",
+        "Add architecture diagram and product demo video.",
+    ]
+
+    for item in roadmap:
+        st.markdown(f"- {item}")
 
 
 def jd_match_mode():
@@ -334,7 +491,7 @@ def jd_match_mode():
         placeholder=(
             "Paste a job description here. Example: We are looking for a working student "
             "with Python, LangChain, RAG, FastAPI, Docker, SQL, and experience building AI applications..."
-        )
+        ),
     )
 
     if st.button("Analyze Fit"):
@@ -347,7 +504,7 @@ def jd_match_mode():
             projects=projects,
             job_title=job_title,
             company=company,
-            job_description=job_description
+            job_description=job_description,
         )
 
         st.divider()
@@ -393,7 +550,10 @@ def jd_match_mode():
                     st.write(project["description"])
 
                     if item["matched_terms"]:
-                        st.write("**Evidence matched:** " + ", ".join(item["matched_terms"][:12]))
+                        st.write(
+                            "**Evidence matched:** "
+                            + ", ".join(item["matched_terms"][:12])
+                        )
 
                     if project["github"]:
                         st.link_button("View GitHub Repository", project["github"])
@@ -409,13 +569,13 @@ def jd_match_mode():
             profile=profile,
             job_title=job_title,
             company=company,
-            analysis=analysis
+            analysis=analysis,
         )
 
         st.text_area(
             "Fit summary",
             value=fit_summary,
-            height=140
+            height=140,
         )
 
         st.header("Follow-up Message")
@@ -424,13 +584,13 @@ def jd_match_mode():
             profile=profile,
             job_title=job_title,
             company=company,
-            analysis=analysis
+            analysis=analysis,
         )
 
         st.text_area(
             "Suggested follow-up",
             value=follow_up,
-            height=180
+            height=180,
         )
 
 
@@ -452,7 +612,7 @@ def dashboard_view():
         "Role Interest",
         "Message",
         "Top Matched Project",
-        "Created At"
+        "Created At",
     ]
 
     df = pd.DataFrame(leads, columns=columns)
@@ -505,12 +665,14 @@ def dashboard_view():
                 "Suggested follow-up message",
                 value=follow_up,
                 height=120,
-                key=f"followup_{row['ID']}"
+                key=f"followup_{row['ID']}",
             )
 
 
 if page == "Recruiter View":
     recruiter_view()
+elif page == "Reviewer Snapshot":
+    reviewer_snapshot()
 elif page == "JD Match Mode":
     jd_match_mode()
 else:
